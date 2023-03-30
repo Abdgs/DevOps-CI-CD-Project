@@ -47,7 +47,7 @@ pipeline {
 
       steps {
         sh 'docker build -t javawebapp:latest .'
-        sh 'docker tag javawebapp Abdgs/javawebapp:latest'
+        sh 'docker tag javawebapp palakbhawsar/javawebapp:latest'
       }
     }
 
