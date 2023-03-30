@@ -9,30 +9,40 @@ pipeline {
 
   // Fetch code from GitHub
 
-  stages {
-    stage('checkout') {
-      steps {
-        git branch: 'main', url: 'https://github.com/Abdgs/DevOps-CI-CD-Project.git'
-
-      }
-    }
-
-   // Build Java application
-
-    stage('Maven Build') {
-      steps {
-        sh 'mvn clean install'
-      }
-
-     // Post building archive Java application
-
-      post {
-        success {
-          archiveArtifacts artifacts: '**/target/*.jar'
+ stages {
+        stage('Checkout') {
+            steps {
+                // Checkout source code from Git repository
+                git 'https://github.com/Abdgs/DevOps-CI-CD-Project.git'
+            }
         }
-      }
+        
+        stage('Build') {
+            steps {
+                // Run Maven to build the project
+                sh 'mvn clean install'
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                // Run tests using Maven
+                sh 'mvn test'
+            }
+        }
+        
+        stage('Package') {
+            steps {
+                // Create a JAR file using Maven
+                sh 'mvn package'
+            }
+            post {
+                // Archive the JAR file as a build artifact
+                archiveArtifacts artifacts: 'target/myproject.jar', fingerprint: true
+            }
+        }
     }
-
+}
   // Test Java application
 
     stage('Maven Test') {
