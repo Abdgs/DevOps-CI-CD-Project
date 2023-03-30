@@ -79,9 +79,9 @@ pipeline {
       steps {
         script {
           sshagent(credentials: ['awscred']) {
-          sh "ssh -o StrictHostKeyChecking=no ec2-user@$54.255.155.227 'docker stop javaApp || true && docker rm javaApp || true'"
-      sh "ssh -o StrictHostKeyChecking=no ec2-user@$ 54.255.155.227'docker pull palakbhawsar/javawebapp'"
-          sh "ssh -o StrictHostKeyChecking=no ec2-user@54.255.155.227 'docker run --name javaApp -d -p 8081:8081 palakbhawsar/javawebapp'"
+          sh "ssh -o StrictHostKeyChecking=no 'ec2-user@54.255.155.227' docker stop javaApp || true && docker rm javaApp || true'"
+      sh "ssh -o StrictHostKeyChecking=no 'ec2-user@54.255.155.227' docker pull palakbhawsar/javawebapp'"
+          sh "ssh -o StrictHostKeyChecking=no ec2-user@54.255.155.227' docker run --name javaApp -d -p 8081:8081 palakbhawsar/javawebapp'"
           }
         }
       }
