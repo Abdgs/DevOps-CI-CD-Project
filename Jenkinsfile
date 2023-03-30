@@ -2,9 +2,9 @@ pipeline {
   agent any
 	
   environment {
-    DOCKERHUB_CREDENTIALS = credentials('docker-hub-cred')
-    REMOTE_SERVER = 'your-remote-server-ip'
-    REMOTE_USER = 'your-remote-server-user' 	  	  
+    DOCKERHUB_CREDENTIALS = credentials('dockerjenkinscred')
+    REMOTE_SERVER = '54.179.44.79'
+    REMOTE_USER = 'ec2-user' 	  	  
   }
 	
   // Fetch code from GitHub
@@ -12,7 +12,7 @@ pipeline {
   stages {
     stage('checkout') {
       steps {
-        git branch: 'main', url: 'https://github.com/palakbhawsar98/JavaWebApp'
+        git branch: 'main', url: 'https://github.com/Abdgs/DevOps-CI-CD-Project.git'
 
       }
     }
@@ -47,7 +47,7 @@ pipeline {
 
       steps {
         sh 'docker build -t javawebapp:latest .'
-        sh 'docker tag javawebapp palakbhawsar/javawebapp:latest'
+        sh 'docker tag javawebapp Abdgs/javawebapp:latest'
       }
     }
 	  
@@ -63,7 +63,7 @@ pipeline {
 	  
     stage('Push Image to dockerHUb') {
       steps {
-        sh 'docker push palakbhawsar/javawebapp:latest'
+        sh 'docker push Abdgs/javawebapp:latest'
       }
       post {
         always {
@@ -79,9 +79,9 @@ pipeline {
       steps {
         script {
           sshagent(credentials: ['awscred']) {
-          sh "ssh -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_SERVER} 'docker stop javaApp || true && docker rm javaApp || true'"
-	  sh "ssh -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_SERVER} 'docker pull palakbhawsar/javawebapp'"
-          sh "ssh -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_SERVER} 'docker run --name javaApp -d -p 8081:8081 palakbhawsar/javawebapp'"
+          sh "ssh -o StrictHostKeyChecking=no ec2-user@54.179.44.79'docker stop javaApp || true && docker rm javaApp || true'"
+	  sh "ssh -o StrictHostKeyChecking=no ec2-user@54.179.44.79 'docker pull Abdgs/javawebapp'"
+          sh "ssh -o StrictHostKeyChecking=no ec2-user@54.179.44.79 'docker run --name javaApp -d -p 8081:8081 Abdgs/javawebapp'"
           }
         }
       }
