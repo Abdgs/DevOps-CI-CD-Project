@@ -2,7 +2,7 @@ pipeline {
   agent any
 	
   environment {
-    DOCKERHUB_CREDENTIALS = credentials('dockerjenkinscred')
+    DOCKERHUB_CREDENTIALS = 'dockerjenkinscred'
     REMOTE_SERVER = '54.179.44.79'
     REMOTE_USER = 'ec2-user' 	  	  
   }
@@ -20,9 +20,9 @@ pipeline {
    // Build Java application
 	  
     stage('Maven Build') {
-      steps {
-        sh 'mvn clean install'
-      }
+     	def mavenHome= tool name: "MAVEN_HOME",type: "maven"
+	    sh "${mavenHome}/bin/mvn clean package"
+    }
 	    
      // Post building archive Java application
 	    
